@@ -1,0 +1,133 @@
+:root {
+    --radius: 6px;
+    --room-black: #3C3933;
+    --room-green: #5EA139;
+    --room-yellow: #EABD2C;
+    --room-red: #D83732;
+    --room-blue: #37A1DD;
+    --shadow: 0 2px 4px rgba(0, 0, 0, .4), 0 7px 13px -3px rgba(0, 0, 0, .3), inset 0 -3px 0 rgba(0, 0, 0, .2);
+}
+
+[v-cloak] {
+    display: none;
+}
+
+body {
+    background-color: #8A8A8A;
+    font-family: sans-serif;
+}
+
+.app-grid {
+    padding: 1.5rem;
+    display: grid;
+    gap: 0.2rem;
+    grid-template-columns: min-content min-content 1fr 1fr 1fr 1fr 1fr min-content;
+    grid-template-rows: min-content min-content 1fr 1fr 1fr 1fr 1fr min-content;
+    align-items: stretch;
+
+}
+
+.grid-label {
+    color: white;
+    font-size: larger;
+    font-weight: bold;
+    text-align: center;
+    vertical-align: center;
+}
+
+.grid-label-row {
+    padding-right: 0.5rem;
+    align-self: center;
+}
+
+.control, .room {
+    padding: 1rem;
+    border: solid gray 3px;
+    border-radius: var(--radius);
+    text-align: center;
+}
+
+.control {
+    padding: 0.5rem;
+    background-color: #ccc;
+    font-weight: bold;
+    font-size: 120%;
+    box-shadow: rgba(50, 50, 93, 0.25) 0 50px 100px -20px, rgba(0, 0, 0, 0.3) 0 30px 60px -30px, rgba(10, 37, 64, 0.35) 0 -2px 6px 0 inset;
+    display: grid;
+    align-items: center;
+}
+
+.control:hover {
+    background-color: #fae03e;
+}
+
+.room.active {
+    border-color: orange;
+}
+
+.black {
+    background-color: var(--room-black);
+    color: white;
+}
+
+.green {
+    background-color: var(--room-green);
+    color: white;
+}
+
+.white {
+    background-color: white;
+    color: black;
+}
+
+.red {
+    background-color: var(--room-red);
+    color: white;
+}
+
+.yellow {
+    background-color: var(--room-yellow);
+    color: black;
+}
+
+.blue {
+    background-color: var(--room-blue);
+    color: white;
+}
+
+.room-edit {
+    background: lightgray;
+    padding: 1rem;
+    margin: 2rem;
+    border-radius: var(--radius);
+}
+
+.room-edit-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.room-edit-colors {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.room-edit-colors div {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: var(--radius);
+    box-shadow: rgba(25, 25, 46, 0.25) 0 6px 12px -2px, rgba(0, 0, 0, 0.3) 0 3px 7px -3px;
+    display: grid;
+    font-size: larger;
+    align-items: center;
+    justify-items: center;
+}
+
+.room-edit-colors div:hover {
+    border-color: orange;
+}
+
+.room-edit textarea {
+    width: 25rem;
+    min-height: 4rem;
+}
