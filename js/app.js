@@ -1,4 +1,5 @@
 import {createApp, reactive, ref} from 'vue';
+import 'https://tomashubelbauer.github.io/github-pages-local-storage/index.js';
 
 const STORAGE_KEY = 'rooms';
 
