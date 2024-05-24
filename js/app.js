@@ -1,5 +1,7 @@
 import {createApp, reactive, ref} from 'vue';
 
+const STORAGE_KEY = 'rooms';
+
 const rotate = (n, direction) => {
     n = n + direction;
 
@@ -14,6 +16,52 @@ const rotate = (n, direction) => {
     return n;
 }
 
+
+/**
+ * Get the initial state of the rooms, looking first at localStorage, and
+ * if not found there, generate a new fresh layout.
+ *
+ * @returns {any|*[]}
+ */
+const getRooms = () => {
+    const savedRooms = localStorage.getItem(STORAGE_KEY);
+
+    if (savedRooms) {
+        return JSON.parse(savedRooms);
+    }
+
+    // Generate a new set of rooms
+    const r = [];
+    for (let x = 1; x <= 5; x++) {
+        for (let y = 1; y <= 5; y++) {
+            let color = 'black';
+            let note = '';
+
+            // Left and right edge except for center row, can be an exit
+            if ((x === 1 || x === 5) && y !== 3) {
+                note = '?';
+            }
+
+            // Top and bottom edge except for center column, can be an exit
+            if ((y === 1 || y === 5) && x !== 3) {
+                note = '?';
+            }
+
+            // Middle is special
+            if (x === 3 && y === 3) {
+                color = 'white';
+                note = 'Central';
+            }
+
+            r.push({
+                x, y, color, note,
+            });
+        }
+    }
+
+    return r;
+}
+
 createApp({
     setup() {
         const colors = ref(['green', 'yellow', 'red', 'blue', 'black', 'white']);
@@ -23,16 +71,7 @@ createApp({
         const current_room = ref(null);
         const note_ref = ref();
 
-        const r = [];
-        for (let x = 1; x <= 5; x++) {
-            for (let y = 1; y <= 5; y++) {
-                r.push({
-                    x, y, color: 'black', note: '?', cls: 'black',
-                });
-            }
-        }
-
-        const rooms = reactive(r);
+        const rooms = reactive(getRooms());
 
         const getRoom = (x, y) => {
             return rooms.find((r) => ((r.x === x) && (r.y === y)))
@@ -53,27 +92,21 @@ createApp({
             }
         };
 
-        // Remove '?' from rooms that can't have the exit
-        //
-        for (let x = 2; x <= 4; x++) {
-            for (let y = 2; y <= 4; y++) {
-                set(x, y, 'black', '');
-            }
-        }
+        const resetGame = () => {
+            localStorage.removeItem(STORAGE_KEY);
+            window.location = window.location;
+        };
 
-        // These can't have the exit either.
-        //
-        set(3, 1, 'black', '');
-        set(1, 3, 'black', '');
-        set(5, 3, 'black', '');
-        set(3, 5, 'black', '');
+        const saveRooms = () => {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(rooms));
+        };
 
-        set(3, 3, 'white', 'Central');
         editRoom(3, 3);
 
         const setCurrentColor = (color) => {
             current_room.value.color = color;
             note_ref.value.focus();
+            saveRooms();
         }
 
         const shiftColumn = (col, dir) => {
@@ -92,6 +125,7 @@ createApp({
                 current_y.value = rotate(current_y.value, dir);
             }
 
+            saveRooms();
         }
 
         const shiftRow = (row, dir) => {
@@ -109,6 +143,8 @@ createApp({
             if (current_y.value === row) {
                 current_x.value = rotate(current_x.value, dir);
             }
+
+            saveRooms();
         }
 
         return {
@@ -120,6 +156,8 @@ createApp({
             rooms,
             editRoom,
             getRoom,
+            resetGame,
+            saveRooms,
             setCurrentColor,
             shiftColumn,
             shiftRow,

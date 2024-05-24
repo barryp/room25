@@ -138,13 +138,25 @@
                     </a>
                 </div>
 
-                <textarea
-                    style="margin-top: 1rem;"
-                    id="note"
-                    ref="note_ref"
-                    v-model="current_room.note"
-                    aria-label="Notes"
-                ></textarea>
+                <div style="display: flex; justify-content: space-between;">
+                    <textarea
+                        style="margin-top: 1rem;"
+                        id="note"
+                        ref="note_ref"
+                        v-model="current_room.note"
+                        aria-label="Notes"
+                        @change="saveRooms"
+                    ></textarea>
+                    <div style="display: flex; align-items: flex-end;">
+                        <button
+                            type="button"
+                            style="padding: 0.5rem; background-color: red; color: white; font-weight: bold; border-radius: 0.5rem;"
+                            @click="resetGame"
+                        >
+                            Start new game
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
         <script type="module" src="js/app.js"></script>
